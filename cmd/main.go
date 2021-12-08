@@ -11,6 +11,16 @@ import (
 )
 
 func main() {
+	// var kubeconfig string
+	// if home := homedir.HomeDir(); home != "" {
+	// 	kubeconfig = filepath.Join(home, ".kube", "config")
+	// }
+
+	// config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
 	config, err := rest.InClusterConfig()
 	if err != nil {
 		log.Fatal(err)
@@ -27,12 +37,14 @@ func main() {
 			&cli.StringFlag{
 				Name:    "namespace",
 				Usage:   "namespace for deployment",
+				Value:   "default",
 				Aliases: []string{"n"},
 			},
 		},
 		Commands: []*cli.Command{
 			apps.NewDeploymentCommand(client),
 			apps.NewStatusfulsetCommand(client),
+			apps.NewNetworkPolicyCommand(client),
 		},
 	}
 
